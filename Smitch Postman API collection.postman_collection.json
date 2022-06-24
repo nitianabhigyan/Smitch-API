@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "061bfcaa-cf45-4f15-b448-61c69ffe7520",
+		"name": "Smitch Postman API collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21632792"
+	},
+	"item": [
+		{
+			"name": "Everything_is_valid",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/details",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list_of_users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/users",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_user_details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/user?user_id={{user_id}}",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"user"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "{{user_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_device_status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/device/details?user_id={{user_id}}\n&device_id=",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"device",
+						"details"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "{{user_id}}\n",
+							"description": "Id of user account"
+						},
+						{
+							"key": "device_id",
+							"value": "",
+							"description": "Device  id "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alter_power_status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var user_id = pm.environment.get(\"user_id\");",
+							"request.data[\"user_id\"] = user_id;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "x-api-key",
+						"value": "YOUR_API_KEY"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"commands\": [\n    {\n      \"device_id\": \"{{device_id}}\",\n      \"device_settings\": {\n        \"power_status\": true\n\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/device",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"device"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{api_key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user_id",
+			"value": ""
+		},
+		{
+			"key": "api_key",
+			"value": ""
+		}
+	]
+}
