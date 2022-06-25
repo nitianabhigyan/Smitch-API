@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Everything_is_valid",
+			"name": "everything_is_valid",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -201,6 +201,77 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n \"user_id\": \"{{user_id}}\",\n  \"scene_id\": \"{{scene_id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/scene",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"scene"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Trigger_a_scene_with_delay",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"user_id\": \"{{user_id}}\",\n  \"scene_id\": \"{{scene_id}}\",\n  \"delay\": 5\n}",
 					"options": {
 						"raw": {
 							"language": "json"
