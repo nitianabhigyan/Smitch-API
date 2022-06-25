@@ -1,5 +1,5 @@
 # Smitch-Postman-API
-A postman collection to control switch smart devices.
+A postman collection to control smitch smart devices including lights and switches.
 
 Offical documentation for the Smitch Smart app control: [https://docs.developer.mysmitch.com](https://docs.developer.mysmitch.com)
 
