@@ -50,12 +50,6 @@
 						"key": "accept",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "",
-						"value": "",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"url": {
@@ -85,11 +79,6 @@
 					{
 						"key": "accept",
 						"value": "application/json"
-					},
-					{
-						"key": "",
-						"value": "",
-						"disabled": true
 					}
 				],
 				"url": {
@@ -135,7 +124,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://app.api.developer.mysmitch.com/v1/app/device/details?user_id={{user_id}}\n&device_id=",
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/device/details?user_id={{user_id}}\n&device_id={{device_id}}",
 					"protocol": "https",
 					"host": [
 						"app",
@@ -158,7 +147,7 @@
 						},
 						{
 							"key": "device_id",
-							"value": "",
+							"value": "{{device_id}}",
 							"description": "Device  id "
 						}
 					]
@@ -167,14 +156,24 @@
 			"response": []
 		},
 		{
-			"name": "Alter_power_status",
+			"name": "Trigger_a_scene",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"var user_id = pm.environment.get(\"user_id\");",
-							"request.data[\"user_id\"] = user_id;"
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
 						],
 						"type": "text/javascript"
 					}
@@ -188,8 +187,75 @@
 						"value": "application/json"
 					},
 					{
-						"key": "x-api-key",
-						"value": "YOUR_API_KEY"
+						"key": "",
+						"value": "",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"user_id\": \"{{user_id}}\",\n  \"scene_id\": \"{{scene_id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/scene",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"scene"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alter_power_status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
 					},
 					{
 						"key": "Content-Type",
@@ -215,6 +281,163 @@
 						"app",
 						"job",
 						"device"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alter_multiple_settings_one_device",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"commands\": [\n    {\n      \"device_id\": \"{{device_id}}\",\n      \"device_settings\": {\n        \"power_status\": true,\n        \"brightness\":90,\n        \"temperature\": 4000\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/device",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"device"
+					]
+				},
+				"description": "To view a list of valid settings for your device, refer the \"data\".\"current_state\" variable for the \"get_device_status\" request."
+			},
+			"response": []
+		},
+		{
+			"name": "alter_multiple_settings_multiple_device",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"commands\": [\n    {\n      \"device_id\": \"{{device_id}}\",\n      \"device_settings\": {\n        \"power_status\": true,\n        \"brightness\":99,\n        \"temperature\": 2700\n      }\n    },\n        {\n      \"device_id\": \"{{device_id2}}\",\n      \"device_settings\": {\n        \"power_status\": true,\n        \"brightness\":10,\n        \"temperature\": 6500\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/device",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"device"
+					]
+				},
+				"description": "To view a list of valid settings for your device, refer the \"data\".\"current_state\" variable for the \"get_device_status\" request."
+			},
+			"response": []
+		},
+		{
+			"name": "check_job_status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job?job_id={{job_id}}",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job"
+					],
+					"query": [
+						{
+							"key": "job_id",
+							"value": "{{job_id}}"
+						}
 					]
 				}
 			},
@@ -264,6 +487,26 @@
 		{
 			"key": "api_key",
 			"value": ""
+		},
+		{
+			"key": "device_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "scene_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "job_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_id2",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
