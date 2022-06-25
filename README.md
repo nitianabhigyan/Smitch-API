@@ -5,7 +5,7 @@ Offical documentation for the Smitch Smart app control: [https://docs.developer.
 
 ## How to use
 
-Please familiarise yourself with the basic prerequisite at: [https://docs.developer.mysmitch.com/#0.-prerequisites](https://docs.developer.mysmitch.com/#0.-prerequisites)
+Please familiarise yourself with the basic prerequisite at: [Prerequisites](https://docs.developer.mysmitch.com/#0.-prerequisites)
 <ul>
     <li>Register a developer account at: [Developer Portal](https://developer.mysmitch.com) by selecting Sign Up (Sign In if you already created an account)
     <li>Add an App in your developer account and create a "TEST" API KEY. More details: [api-keys](https://docs.developer.mysmitch.com/app/api-keys). Save this api-key somewhere safe.
