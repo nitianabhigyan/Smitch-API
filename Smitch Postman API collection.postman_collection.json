@@ -151,7 +151,8 @@
 							"description": "Device  id "
 						}
 					]
-				}
+				},
+				"description": "## device_id\n\nIt is a unique id representing a single device\n\n## device_type\n\nIt represents the type of device and can have one of the following values: `light, plug, extension`\n\n## available_traits\n\nThe available traits that are present for this device are based on its hardware support.\n\n## is_online\n\nThis field will be `true` if the device is online (has active connection to our servers) and vice-versa\n\n## last_online_timestamp\n\nThis field will have the timestamp in UTC for which the last known value of `is_online` was `true`\n\n## power_consumption\n\nCurrently, this field will only be present for `plug` devices, refer to more details here\n\n## current_state\n\nThis field will have an object, which has the current `available_traits` values for the given device.  \n\nMore details: [https://docs.developer.mysmitch.com/devices/device](https://docs.developer.mysmitch.com/devices/device)"
 			},
 			"response": []
 		},
@@ -409,6 +410,67 @@
 			"response": []
 		},
 		{
+			"name": "alter_multiple_switch_power_status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"job_id = jsonData.data.job_id;",
+							"pm.collectionVariables.set(\"job_id\", job_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"commands\": [\n    {\n      \"device_id\": \"{{device_id}}\",\n      \"device_settings\": {\n        \"switches\": [\n        {\n            \"switch_id\": 1,\n            \"power_status\": false\n        },\n        {\n            \"switch_id\": 2,\n            \"power_status\": true\n        }\n        ]\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://app.api.developer.mysmitch.com/v1/app/job/device",
+					"protocol": "https",
+					"host": [
+						"app",
+						"api",
+						"developer",
+						"mysmitch",
+						"com"
+					],
+					"path": [
+						"v1",
+						"app",
+						"job",
+						"device"
+					]
+				},
+				"description": "To view a list of valid settings for your device, refer the \"data\".\"current_state\" variable for the \"get_device_status\" request."
+			},
+			"response": []
+		},
+		{
 			"name": "check_job_status",
 			"request": {
 				"method": "GET",
@@ -439,9 +501,72 @@
 							"value": "{{job_id}}"
 						}
 					]
-				}
+				},
+				"description": "For, the `task_status` key will have either one of the values listed below\n\n*   **PENDING** : The job is waiting for execution.\n*   **STARTED** : The job has been started.\n*   **SUCCESS** : The job is executed successfully.\n*   **FAILURE** : The job raised an exception and failed to execute."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "check_job_status",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://app.api.developer.mysmitch.com/v1/app/job?job_id={{job_id}}",
+							"protocol": "https",
+							"host": [
+								"app",
+								"api",
+								"developer",
+								"mysmitch",
+								"com"
+							],
+							"path": [
+								"v1",
+								"app",
+								"job"
+							],
+							"query": [
+								{
+									"key": "job_id",
+									"value": "{{job_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 25 Jun 2022 03:53:53 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "93"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"task_id\": \"817edc19-532e-48e0-b39e-1570c15f52e6\",\n  \"task_status\": \"SUCCESS\",\n  \"task_result\": true\n}"
+				}
+			]
 		}
 	],
 	"auth": {
