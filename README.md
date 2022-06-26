@@ -1,5 +1,5 @@
-# Smitch-Postman-API
-A postman collection and openapi spec. to control smitch smart devices including lights and switches.
+# Smitch-API
+A **postman collection** and **openapi spec.** to control smitch smart devices including lights and switches.
 
 Offical documentation for the Smitch Smart app control: [https://docs.developer.mysmitch.com](https://docs.developer.mysmitch.com). <br>
 Offical "Get started" guide: [Get-Started](https://docs.developer.mysmitch.com/developer-portal/get-started).
