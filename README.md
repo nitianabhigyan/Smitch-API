@@ -21,7 +21,7 @@ Please familiarise yourself with the basic prerequisite at: [Prerequisites](http
 
 ## To Be Done
  - ~~Check feasibility of converting this to openapi.~~ **Result**: Doable.
- - Convert this to OpenAPI 3.
+ - ~~Convert this to OpenAPI version 3 spec.~~
  - Use openapi and swagger-ui to host this in the form of a github page.
  - Customise the openapi.yaml spec to better suite the needs of the version.
  - Do test runs
