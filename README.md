@@ -4,7 +4,7 @@ A **postman collection** and **openapi spec.** to control smitch smart devices i
 Offical documentation for the Smitch Smart app control: [https://docs.developer.mysmitch.com](https://docs.developer.mysmitch.com). <br>
 Offical "Get started" guide: [Get-Started](https://docs.developer.mysmitch.com/developer-portal/get-started).
 
-## How to use postman collection
+## How to use the postman collection
 ### Prerequisites
 Please familiarise yourself with the basic prerequisite at: [Prerequisites](https://docs.developer.mysmitch.com/#0.-prerequisites)
 - Register a developer account at: [Developer-Portal](https://developer.mysmitch.com) by selecting Sign Up (Sign In if you already created an account)
@@ -13,7 +13,7 @@ Please familiarise yourself with the basic prerequisite at: [Prerequisites](http
 
 ### Using the collection.
 
-1. Load the collection in your Postman.
+1. Load the collection located at [collection](./Smitch&#32;Postman&#32;API&#32;collection.postman_collection.json) in your Postman.
 2. Open the "Smitch Postman API collection", select the variables tab and set the "api_key" variable's value to your api_key obtained from.
 3. Select the "Everything_is_valid" request and send it. If everything was done correctly, this should return a  "status": "success". If not, please validate your steps again.
 4. Select the "list_of_users" request and send it. Obtain the user_id variable of the desired user (make sure the said account is added as tester as per above), add this key's value to your collection's variable "user_id" variable's value.
