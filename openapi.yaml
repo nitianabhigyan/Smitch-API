@@ -1,0 +1,471 @@
+openapi: 3.0.0
+info:
+  title: Smitch Postman API collection
+  contact: {
+    name: "Github",
+    url: https://github.com/nitianabhigyan
+  }
+  version: "1.0"
+  description: |
+    Offical documentation for the Smitch Smart app control: [https://docs.developer.mysmitch.com](https://docs.developer.mysmitch.com)
+    ## How to use
+    ### Prerequisites
+    Please familiarise yourself with the basic prerequisite at: [Prerequisites](https://docs.developer.mysmitch.com/#0.-prerequisites)
+    - Register a developer account at: [Developer-Portal](https://developer.mysmitch.com) by selecting Sign Up (Sign In if you already created an account)
+    - Add an App in your developer account and create a "TEST" API KEY. More details: [api-keys](https://docs.developer.mysmitch.com/app/api-keys). Save this api-key somewhere safe.
+    - Link a "tester" to your application. More details: [user-tester](https://docs.developer.mysmitch.com/users/user-tester), make sure the tester's account used here is the same as the one you use to sign in the Smitch mobile app.
+    
+servers:
+- url: https://app.api.developer.mysmitch.com/v1/app
+paths:
+  /details:
+    get:
+      tags:
+      - All
+      summary: An API to check if everything is valid and all prequisite are completed or not.
+      operationId: everything_is_valid
+      responses:
+        "200":
+          description: ""
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/details_response"
+        "405":
+          description: "CORS policy is preventing communication."
+      deprecated: false
+  /users:
+    get:
+      tags:
+      - All
+      summary: list_of_users
+      operationId: list_of_users
+      responses:
+        "200":
+          description: ""
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/list_of_users_response"
+      deprecated: false
+  /user:
+    get:
+      tags:
+      - All
+      summary: get_user_details
+      operationId: get_user_details
+      parameters:
+      - name: user_id
+        in: query
+        description: "The user_id you want more details about. Refer previous API for details"
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/get_user_details_response"
+      deprecated: false
+  /device/details:
+    get:
+      tags:
+      - All
+      summary: get details for users OR users and their devices.
+      description: "## device_id\n\nIt is a unique id representing a single device\n\n## device_type\n\nIt represents the type of device and can have one of the following values: `light, plug, extension`\n\n## available_traits\n\nThe available traits that are present for this device are based on its hardware support.\n\n## is_online\n\nThis field will be `true` if the device is online (has active connection to our servers) and vice-versa\n\n## last_online_timestamp\n\nThis field will have the timestamp in UTC for which the last known value of `is_online` was `true`\n\n## power_consumption\n\nCurrently, this field will only be present for `plug` devices, refer to more details here\n\n## current_state\n\nThis field will have an object, which has the current `available_traits` values for the given device.  \n\nMore details: [https://docs.developer.mysmitch.com/devices/device](https://docs.developer.mysmitch.com/devices/device)"
+      operationId: get_device_status
+      parameters:
+      - name: user_id
+        in: query
+        description: Id of user account
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: device_id
+        in: query
+        description: Device  Id
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+          "200":
+            description: ""
+            content: 
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/get_device_details_response"
+      deprecated: false
+  /job/scene:
+    post:
+      tags:
+      - All
+      summary: trigger_a_scene
+      operationId: trigger_a_scene
+      description: |
+        All the POST API Calls to /app/job/* routes trigger a Celery Task and are processed by queue workers and are thus Asynchronous by nature.
+
+      parameters:
+      requestBody:
+        description: "Supply the optional delay parameter in body, to trigger a scene with delay."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/trigger_a_scene_request"
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/trigger_a_scene_response"
+      deprecated: false
+  /job/device:
+    post:
+      tags:
+      - All
+      summary: alter_device_status
+      operationId: alter_device_status
+      parameters:
+      requestBody:
+        description: "You can, in theory, edit all combinations from one device -> one value to multiple devices -> multiple supported values. Check out: [here](https://docs.developer.mysmitch.com/tutorials/3-multiple-devices-change-device-settings) and [here](https://docs.developer.mysmitch.com/tutorials/1-single-rgb-colour-brightness-change) for more details."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/alter_device_status_request"
+        required: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/alter_device_status_response"
+      deprecated: false
+  /job:
+    get:
+      tags:
+      - All
+      summary: Check status of a job.
+      description: >-
+        For, the `task_status` key will have either one of the values listed below
+
+        *   **PENDING** : The job is waiting for execution.
+
+        *   **STARTED** : The job has been started.
+
+        *   **SUCCESS** : The job is executed successfully.
+
+        *   **FAILURE** : The job raised an exception and failed to execute.
+      operationId: check_job_status
+      parameters:
+      - name: job_id
+        in: query
+        description: ""
+        required: true
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/check_job_status_response"
+              example:
+                task_id: "SOME_TASK_ID"
+                task_status: "SUCCESS"
+                task_result: true
+      deprecated: false
+      
+components:
+  schemas:
+    details_response:
+      title: everything_is_valid_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Got App Details"
+        data:
+          type: object
+          properties:
+            app_id:
+              type: string
+              example: "APP_10c9m2d7saf74722a8edd1f6b21fe6d1"
+            api_key_type: 
+              type: string
+              example: "DEV"
+            id:
+              type: number
+              example: 124
+    list_of_users_response:
+      title: list_of_users_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Got list of users for app"
+        data:
+          type: array
+          items:
+            properties:
+              user_id:
+                type: string
+                example: "SOME_USER_ID"
+              tester_email: 
+                type: string
+                example: "something@gmail.com"
+              app_join_date:
+                type: string
+                example: "UTC_TIMESTAMP"
+    get_user_details_response:
+      title: get_user_details_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Got user details for app"
+        data:
+          type: array
+          items:
+            properties:
+              user_id:
+                type: string
+                example: "SOME_USER_ID"
+              home_names:
+                type: array
+                items:
+                  properties:
+                    home_name:
+                      type: string
+                      example: "Default Home"  
+                    room_names:
+                      type: array
+                      items:
+                        type: string
+              user_devices:
+                type: array
+                items:
+                  properties:
+                    device_id:
+                      type: string
+                      example: "SOME_DEVICE_ID"
+                    name:
+                      type: string
+                      example: "SOME_DEVICE_NAME"
+                    device_type:
+                      type: string
+                      example: "light"
+                    home_name:
+                      type: string
+                      example: "default_home"
+                    room_name:
+                      type: string
+                      example: "Bedroom"
+                    available_traits:
+                      type: array
+                      items:
+                        type: string
+              scenes:
+                type: array
+                items:
+                  properties:
+                    home_name:
+                      type: string
+                      example: "Default Home"
+                    scene_name:
+                      type: string
+                      example: "Good Morning"
+                    scene_id:
+                      type: string
+                      example: "SOME_SCENE_ID"
+              service:
+                type: string
+                example: "SH"
+    get_device_details_response:
+      title: get_device_details_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Got Device Details"
+        data:
+          additionalProperties: {}
+          type: object
+          properties:
+            device_id:
+              type: string
+              example: "SOME_DEVICE_ID"
+            name:
+              type: string
+              example: "SOME_DEVICE_NAME"
+            device_type:
+              type: string
+              example: "SOME_DEVICE_NAME"
+            home_name:
+              type: string
+              example: "Default Home Name"
+            room_name:
+              type: string
+              example: "SOME_ROOM_NAME"
+            available_traits:
+              type: array
+              items:
+                type: string
+            current_state:
+              type: object
+              additionalProperties: true
+            is_online:
+              type: boolean
+              example: true
+            last_online_timestamp:
+              type: string
+              example: "2021-06-04T12:55:27.467Z"
+    trigger_a_scene_response:
+      title: trigger_a_scene_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "New Job for triggering scene queued"
+        data:
+          type: object
+          properties:
+            job_id:
+              type: string
+              example: "SOME_JOB_ID"
+    alter_device_status_response:
+      title: alter_device_status_response
+      required:
+      - status
+      - message
+      - data
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "New Job for changing Device Settings Queued"
+        data:
+          type: object
+          properties:
+            job_id:
+              type: string
+              example: "SOME_JOB_ID"
+    trigger_a_scene_request:
+      title: trigger_a_scene_request
+      required:
+      - user_id
+      - scene_id
+      type: object
+      properties:
+        user_id:
+          type: string
+        scene_id:
+          type: string
+        delay:
+          type: integer
+          format: int32
+      example:
+        user_id: "SOME_USER_ID"
+        scene_id: "SOME_SCENE_ID"
+        delay: 5
+    alter_device_status_request:
+      title: alter_device_status_request
+      required:
+      - user_id
+      - commands
+      type: object
+      properties:
+        user_id:
+          type: string
+        commands:
+          type: array
+          items:
+            $ref: "#/components/schemas/Command"
+          description: "Alter this section as needed."
+    Command:
+      title: Command
+      required:
+      - device_id
+      - device_settings
+      type: object
+      properties:
+        device_id:
+          type: string
+          device_id: "SOME_DEVICE_ID"
+        device_settings:
+          type: object
+          additionalProperties: {}
+    check_job_status_response:
+      title: check_job_status_response
+      required:
+      - task_id
+      - task_status
+      - task_result
+      type: object
+      properties:
+        task_id:
+          type: string
+        task_status:
+          type: string
+        task_result:
+          type: boolean
+        
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+security:
+- apiKey: []
+tags:
+- name: All
+  description: "A parent container for all requests."
