@@ -1,10 +1,10 @@
 # Smitch-Postman-API
-A postman collection to control smitch smart devices including lights and switches.
+A postman collection and openapi spec. to control smitch smart devices including lights and switches.
 
 Offical documentation for the Smitch Smart app control: [https://docs.developer.mysmitch.com](https://docs.developer.mysmitch.com). <br>
 Offical "Get started" guide: [Get-Started](https://docs.developer.mysmitch.com/developer-portal/get-started).
 
-## How to use
+## How to use postman collection
 ### Prerequisites
 Please familiarise yourself with the basic prerequisite at: [Prerequisites](https://docs.developer.mysmitch.com/#0.-prerequisites)
 - Register a developer account at: [Developer-Portal](https://developer.mysmitch.com) by selecting Sign Up (Sign In if you already created an account)
