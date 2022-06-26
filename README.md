@@ -20,6 +20,7 @@ Please familiarise yourself with the basic prerequisite at: [Prerequisites](http
 5. To control a device, you first need to identify it's "device_id" and add it in collection's variables. To obtain a list of all devices added in user's account please use the "get_user_details" request.
 
 ## To Be Done
+ - ~~Check feasibility of converting this to openapi.~~ **Result**: Doable.
  - Convert this to OpenAPI 3.
  - Use openapi and swagger-ui to host this in the form of a github page.
  - Customise the openapi.yaml spec to better suite the needs of the version.
